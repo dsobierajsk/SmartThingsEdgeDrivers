@@ -35,6 +35,9 @@ local generate_event_from_zone_status = function(driver, device, zone_status, zb
       zb_rx.address_header.src_endpoint.value,
       event)
   end
+  if device:get_component_id_for_endpoint(zb_rx.address_header.src_endpoint.value) ~= "main" then
+    device:emit_event(event)
+  end
 end
 
 --- Default handler for zoneStatus attribute on the IAS Zone cluster
