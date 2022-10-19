@@ -100,17 +100,17 @@ local function basic_set_handler(driver, device, cmd)
   device:emit_event_for_endpoint(cmd.src_channel, event)
 end
 
-local function do_refresh(driver, device, command)
-  if device:is_cc_supported(cc.SWITCH_BINARY) then
-    device:send_to_component(SwitchBinary:Get({}), command.component)
-  elseif device:is_cc_supported(cc.BASIC) then
-    device:send_to_component(Basic:Get({}), command.component)
-  end
-  if device:supports_capability_by_id(capabilities.powerMeter.ID) or device:supports_capability_by_id(capabilities.energyMeter.ID) then
-    device:send_to_component(Meter:Get({ scale = Meter.scale.electric_meter.WATTS }), command.component)
-    device:send_to_component(Meter:Get({ scale = Meter.scale.electric_meter.KILOWATT_HOURS }), command.component)
-  end
-end
+--local function do_refresh(driver, device, command)
+--  if device:is_cc_supported(cc.SWITCH_BINARY) then
+--    device:send_to_component(SwitchBinary:Get({}), command.component)
+--  elseif device:is_cc_supported(cc.BASIC) then
+--    device:send_to_component(Basic:Get({}), command.component)
+--  end
+--  if device:supports_capability_by_id(capabilities.powerMeter.ID) or device:supports_capability_by_id(capabilities.energyMeter.ID) then
+--    device:send_to_component(Meter:Get({ scale = Meter.scale.electric_meter.WATTS }), command.component)
+--    device:send_to_component(Meter:Get({ scale = Meter.scale.electric_meter.KILOWATT_HOURS }), command.component)
+--  end
+--end
 
 local function switch_report(driver, device, cmd)
   switch_defaults.zwave_handlers[cc.SWITCH_BINARY][SwitchBinary.REPORT](driver, device, cmd)
@@ -131,11 +131,11 @@ local zwave_dual_switch = {
       [SwitchBinary.REPORT] = switch_report
     }
   },
-  capability_handlers = {
-    [capabilities.refresh.ID] = {
-      [capabilities.refresh.commands.refresh.NAME] = do_refresh
-    }
-  },
+  --capability_handlers = {
+  --  [capabilities.refresh.ID] = {
+  --    [capabilities.refresh.commands.refresh.NAME] = do_refresh
+  --  }
+  --},
   sub_drivers = {
     require("zwave-dual-switch/fibaro-walli-double-switch")
   },

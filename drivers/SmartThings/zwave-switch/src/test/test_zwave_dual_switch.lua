@@ -62,7 +62,7 @@ local function test_init()
 end
 
 test.set_test_init_function(test_init)
-
+--[[
 test.register_message_test(
     "Basic Set (0xFF) should be handled by parent device",
     {
@@ -602,7 +602,10 @@ test.register_coroutine_test(
       )
     end
 )
+]]
 
+-- There is issue, refresh sends GETs to dst_channels = {}, in the test_fibaro_double_switch you can see that it sends
+-- messages to different endpoints as the child device in this tests does
 test.register_coroutine_test(
     "Refresh capability (parent) should evoke the correct Z-Wave GETs",
     function()
@@ -624,6 +627,7 @@ test.register_coroutine_test(
     end
 )
 
+-- As you can see here refresh for child device is being handled correctly, GET was sent to endpoint 2
 test.register_coroutine_test(
     "Refresh capability (child) should evoke the correct Z-Wave GETs",
     function()
